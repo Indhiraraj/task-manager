@@ -53,14 +53,36 @@ export const updateTask = async (req, res) => {
   }
 };
 
-// Delete a task
+// Delete a task and its associated sub-modules (if any)
 export const deleteTask = async (req, res) => {
   const { id } = req.params;
   try {
-    const [result] = await pool.query("DELETE FROM tasks WHERE id=?", [id]);
-    if (result.affectedRows === 0) return res.status(404).json({ message: "Task not found" });
-    res.json({ message: "Task deleted successfully" });
+    // Start a transaction
+    await pool.query('START TRANSACTION');
+
+    // Check and delete associated sub-modules
+    const [subModuleResult] = await pool.query("DELETE FROM sub_modules WHERE task_id = ?", [id]);
+    const subModulesDeleted = subModuleResult.affectedRows;
+
+    // Delete the task
+    const [taskResult] = await pool.query("DELETE FROM tasks WHERE id = ?", [id]);
+
+    if (taskResult.affectedRows === 0) {
+      // If no task was deleted, rollback the transaction
+      await pool.query('ROLLBACK');
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    // Commit the transaction if both deletions were successful
+    await pool.query('COMMIT');
+
+    res.json({ 
+      message: "Task deleted successfully",
+      subModulesDeleted: subModulesDeleted
+    });
   } catch (error) {
+    // Rollback the transaction in case of any error
+    await pool.query('ROLLBACK');
     res.status(500).json({ error: error.message });
   }
 };
