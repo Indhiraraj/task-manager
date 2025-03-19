@@ -1,7 +1,7 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
-import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent } from "./ui/card";
+import { Progress } from "./ui/progress";
+import { Button } from "./ui/button";
+import { Textarea } from "./ui/textarea";
 import { useState } from "react";
 
 const tasks = [

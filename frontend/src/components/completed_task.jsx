@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import { Card, CardContent } from "./ui/card";
+import { Button } from "./ui/button";
+import { Progress } from "./ui/progress";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import { useNavigate } from "react-router-dom";
+// import { formatDistanceToNow } from "date-fns";
 
 const AssignedTasks = () => {
   const [tasks, setTasks] = useState([
@@ -81,6 +82,7 @@ const AssignedTasks = () => {
   ]);
   
   const [openTask, setOpenTask] = useState(null);
+  const navigate = useNavigate();
 
   const toggleTask = (id) => {
     setOpenTask(openTask === id ? null : id);
@@ -103,7 +105,7 @@ const AssignedTasks = () => {
       <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Assigned Tasks</h2>
       <div className="space-y-4">
         {tasks.map((task) => (
-          <Card key={task.id} className="p-4 border rounded-lg shadow-md bg-white hover:shadow-lg transition-all">
+          <Card key={task.id}  className="p-4 border rounded-lg shadow-md bg-white hover:shadow-lg transition-all">
             <CardContent>
               <div className="flex justify-between items-center">
                 <h3 className="text-lg font-semibold text-gray-900">{task.name}</h3>
@@ -117,12 +119,15 @@ const AssignedTasks = () => {
                   <p><strong>Priority:</strong> <span className={`px-2 py-1 rounded text-white ${task.priority === "High" ? "bg-red-500" : task.priority === "Medium" ? "bg-yellow-500" : "bg-green-500"}`}>{task.priority}</span></p>
                   <p className="mt-2">{task.description}</p>
                   <p><strong>Deadline:</strong> {task.deadline.toDateString()}</p>
-                  <p className="text-sm text-gray-600"><strong>Time Left:</strong> {formatDistanceToNow(task.deadline, { addSuffix: true })}</p>
+                  {/* <p className="text-sm text-gray-600"><strong>Time Left:</strong> {formatDistanceToNow(task.deadline, { addSuffix: true })}</p> */}
                   <div className="mt-4">
                     <Progress value={task.progress} className="h-3 w-full bg-gray-200 rounded-full overflow-hidden">
                       <div className={`h-full ${task.progress === 100 ? "bg-green-500" : "bg-blue-500"}`} style={{ width: `${task.progress}%` }}></div>
                     </Progress>
                     <p className="text-sm mt-1 text-gray-600">Progress: {task.progress}%</p>
+                  </div>
+                  <div className="mt-4">
+                    <Button className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg shadow-md transition-all">View Reference Documents</Button>
                   </div>
                 </div>
               )}

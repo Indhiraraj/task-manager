@@ -4,6 +4,8 @@ import AdminPage from "./components/AdminPage";
 import Login from "./components/Login";
 // import Unauthorized from "./Unauthorized";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import EmployeePage from "./components/EmployeePage";
+import SubModuleManager from "./components/SubModuleManager";
 
 function App() {
   return (
@@ -14,7 +16,8 @@ function App() {
         
         {/* Protected Routes */}
         <Route path="/admin" element={<ProtectedRoute element={<AdminPage />} allowedRoles={["admin"]} />} />
-        {/* <Route path="/employee" element={<ProtectedRoute element={<EmployeePage />} allowedRoles={["employee"]} />} /> */}
+        <Route path="/employee" element={<ProtectedRoute element={<EmployeePage />} allowedRoles={["employee"]} />} />
+        <Route path="/sub-module/:taskId" element={<ProtectedRoute element={<SubModuleManager />} allowedRoles={["employee"]} />} />
       </Routes>
     </Router>
   );
