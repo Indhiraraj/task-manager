@@ -5,7 +5,7 @@ export default function AdminPage() {
   const [tasks, setTasks] = useState([]);
   const [task, setTask] = useState({
     name: "",
-    collaborators: "",
+    collaborator: "",
     deadline: "",
     description: "",
     attachment: null,
@@ -24,7 +24,7 @@ export default function AdminPage() {
     e.preventDefault();
     setTasks([...tasks, task]);
     setIsFormOpen(false);
-    setTask({ name: "", collaborators: "", deadline: "", description: "", attachment: null });
+    setTask({ name: "", collaborator: "", deadline: "", description: "", attachment: null });
   };
 
   return (
@@ -48,8 +48,8 @@ export default function AdminPage() {
             </div>
 
             <div>
-              <label className="block font-medium">Collaborators (comma separated):</label>
-              <input type="text" name="collaborators" value={task.collaborators} onChange={handleChange} className="w-full p-2 border rounded-md" required />
+              <label className="block font-medium">collaborator:</label>
+              <input type="text" name="collaborator" value={task.collaborator} onChange={handleChange} className="w-full p-2 border rounded-md" required />
             </div>
 
             <div>
@@ -83,7 +83,7 @@ export default function AdminPage() {
               {tasks.map((task, index) => (
                 <li key={index} className="p-4 border rounded-lg shadow-sm bg-gray-50">
                   <h3 className="font-bold">{task.name}</h3>
-                  <p><strong>Collaborators:</strong> {task.collaborators}</p>
+                  <p><strong>collaborator:</strong> {task.collaborator}</p>
                   <p><strong>Deadline:</strong> {task.deadline}</p>
                   <p><strong>Description:</strong> {task.description}</p>
                 </li>
